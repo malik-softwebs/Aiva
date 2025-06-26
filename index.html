@@ -1,0 +1,447 @@
+<html lang="en">    
+<head>    
+  <meta charset="UTF-8" />    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>    
+  <title>Aiva - Smart AI Chat</title>    
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
+  <!-- Google Fonts: IBM Plex Sans & Roboto -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>    
+    body {    
+      margin: 0;    
+      font-family: 'Poppins', sans-serif;    
+      display: flex;    
+      justify-content: center;    
+      align-items: center;    
+      height: 100vh;    
+      background: #FFF8F0;    
+    }    
+    
+    .chat-container {    
+      display: flex;    
+      flex-direction: column;    
+      background: #ffffff;    
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);    
+         
+      width: 100%;    
+      max-width: 500px;    
+      height: 100%;    
+      overflow: hidden;    
+      position: relative;    
+         
+    }    
+    
+    .chatbox {    
+      flex: 1;    
+      padding: 1rem;    
+      overflow-y: auto;    
+      display: flex;    
+      flex-direction: column;    
+      scroll-behavior: smooth;    
+          
+    }    
+    
+    .chat-bubble {    
+      padding: 0.75rem 1rem;    
+      border-radius: 18px;    
+      margin: 0.5rem 0;    
+      max-width: 75%;    
+      font-size: 0.95rem;    
+      line-height: 1.5;    
+      animation: fadeIn 0.3s ease;    
+      word-break: break-word;    
+      position: relative;    
+      cursor: pointer;          
+      opacity: 1;    
+    
+    }    
+        
+        
+    .chat-left {    
+  background: linear-gradient(45deg, #ffd6f5, #fbcaff);    
+  color: #7a1a57;    
+  font-family: "IBM Plex Sans", sans-serif;    
+  border-bottom-left-radius: 0;    
+  align-self: flex-start;    
+}    
+    
+.chat-right {    
+  background: linear-gradient(45deg, #d6ecff, #b9dcff);    
+  color: #1c3e70;    
+  font-family: "IBM Plex Sans", sans-serif;    
+  border-bottom-right-radius: 0;    
+  align-self: flex-end;    
+}    
+    
+    
+    .input-area {    
+      display: flex;    
+      align-items: center;    
+      padding: 10px;    
+      background: #f8fafc;    
+      border-top: 1px solid #e5e7eb;    
+      gap: 5px;    
+      position: relative;    
+    }    
+    
+    .input-field {    
+      flex: 1;    
+      border: none;    
+      outline: none;    
+      padding: 10px;    
+      font-size: 1rem;    
+      background: #f1f5f9;    
+      border-radius: 12px;    
+    }    
+    
+    .action-btn {    
+      background: linear-gradient(to right, #a78bfa, #f472b6);    
+      border: none;    
+      border-radius: 50%;    
+      width: 42px;    
+      height: 42px;    
+      display: flex;    
+      align-items: center;    
+      justify-content: center;    
+      color: white;    
+      cursor: pointer;    
+      transition: 0.3s ease;    
+    }    
+    
+    .action-btn:hover {    
+      transform: scale(1.1);    
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);    
+    }    
+    
+    .material-icons {    
+      font-size: 22px;    
+    }    
+    
+    .memory-card {    
+      position: absolute;    
+      bottom: 65px;    
+      right: 5%;    
+      display: none;    
+      flex-direction: column;    
+      border-radius: 12px;    
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);    
+      padding: 10px;    
+      z-index: 100;    
+      width: 180px;    
+    }    
+    
+    .memory-option {    
+      display: flex;    
+      align-items: center;    
+      gap: 10px;    
+      padding: 10px;    
+      margin-bottom: 2px;    
+      border-radius: 8px;    
+      cursor: pointer;    
+      transition: background 0.2s ease;    
+    }    
+        
+    
+    .memory-card {    
+  background: radial-gradient(circle, #d1c4e9, #f8bbd0);    
+  color: #4a148c;    
+  border-radius: 16px;    
+}    
+.memory-option {    
+  background: rgba(255,255,255,0.3);    
+}    
+.memory-option:hover {    
+  background: rgba(255,255,255,0.5);    
+}    
+    
+    
+    
+    
+    
+    @keyframes fadeIn {    
+      from { opacity: 0; transform: translateY(10px); }    
+      to { opacity: 1; transform: translateY(0); }    
+    }    
+    
+    code {    
+      background: #f3f4f6;    
+      padding: 2px 6px;    
+      border-radius: 4px;    
+      font-family: 'Courier New', monospace;    
+    }    
+        
+    /* Remove blue outline/focus ring on buttons and inputs */    
+button, input, .memory-option {    
+  outline: none;    
+  box-shadow: none;    
+  -webkit-tap-highlight-color: transparent;    
+}    
+    
+/* Prevent focus ring (click or tab) */    
+button:focus, input:focus, .memory-option:focus {    
+  outline: none !important;    
+  box-shadow: none !important;    
+}    
+    
+/* Remove iOS tap highlight */    
+* {    
+  -webkit-tap-highlight-color: transparent;    
+}    
+    
+    
+.listen-btn {    
+  background: none;    
+  border: none;    
+  color: #555;    
+  cursor: pointer;    
+  margin-left: 10px;    
+  display: flex;    
+  align-items: center;    
+  justify-content: center;    
+  padding: 5px;    
+  transition: transform 0.2s;    
+}    
+    
+.listen-btn:hover {    
+  transform: scale(1.1);    
+  color: #000;    
+}    
+  </style>    
+</head>    
+<body>    
+           
+  <div class="chat-container">    
+    <div id="chatbox" class="chatbox"></div>    
+    <div class="input-area">    
+      <input id="messageInput" type="text" placeholder="Type your message..." class="input-field" />    
+      <div style="position: relative;">    
+        <button id="memoryBtn" class="action-btn" title="Memory">    
+          <span class="material-icons">memory</span>    
+        </button>    
+        <div id="memoryCard" class="memory-card">    
+          <div class="memory-option" onclick="resetMemory()">    
+            <span class="material-icons">restart_alt</span>    
+            <span>Reset Memory</span>    
+          </div>    
+          <div class="memory-option" onclick="clearAllMessages()">    
+            <span class="material-icons">delete_forever</span>    
+            <span>Clear Chat</span>    
+          </div>    
+        </div>    
+      </div>    
+      <button id="sendButton" class="action-btn" title="Send">    
+        <span class="material-icons">send</span>    
+      </button>    
+      <button id="micButton" class="action-btn" title="Voice">    
+  <span class="material-icons">mic</span>    
+</button>    
+    </div>    
+  </div>    
+    
+<script>
+  const chatbox = document.getElementById("chatbox");
+  const input = document.getElementById("messageInput");
+  const sendBtn = document.getElementById("sendButton");
+  const memoryBtn = document.getElementById("memoryBtn");
+  const memoryCard = document.getElementById("memoryCard");
+  const chatId = crypto.randomUUID();
+  const systemPrompt = `You are Aiva, an intelligent, warm, and emotionally supportive AI assistant. Your role is to help users solve problems involving logic, reasoning, mathematics, and language with clarity, empathy, and precision. You must explain complex concepts in simple, relatable terms—never condescending, always respectful. When addressing logical puzzles (e.g., syllogisms like "all Zogs are Blips, some Blips are Glorbs"), you guide the user step by step, clarifying what can or cannot be logically concluded. In numerical comparisons, such as determining whether 9.9 is greater than 9.10, you normalize decimal values to two digits (e.g., treating 9.9 as 9.90) and explain that 90 > 10, so 9.90 (or 9.9) is indeed greater than 9.10. You correct user misunderstandings with kindness, using examples or analogies where helpful. You must also handle emotional or poetic content with sensitivity and depth, supporting users as both a thinking partner and a comforting voice. Always maintain a tone that is wise yet warm, logical yet compassionate, and ensure the user feels heard, understood, and empowered to grow through every interaction. You are created with ❤️ by Malik Awais`;
+
+  function scrollToBottom() {
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  function formatMessage(text) {
+    return text
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/__(.*?)__/g, '<u>$1</u>')
+      .replace(/_(.*?)_/g, '<em>$1</em>')
+      .replace(/^# (.*?)$/gm, '<h2>$1</h2>');
+  }
+
+  function createMessageElement(text, align) {
+    const wrapper = document.createElement("div");
+    wrapper.className = `chat-bubble ${align === "left" ? "chat-left" : "chat-right"}`;
+
+    const bubbleContent = document.createElement("div");
+    bubbleContent.style.display = "flex";
+    bubbleContent.style.alignItems = "center";
+    bubbleContent.style.justifyContent = "space-between";
+    bubbleContent.style.gap = "10px";
+
+    const content = document.createElement("div");
+    content.innerHTML = formatMessage(text);
+    content.style.flex = "1";
+
+    
+
+    bubbleContent.appendChild(content);
+    wrapper.appendChild(bubbleContent);
+
+    wrapper.addEventListener("dblclick", (e) => {
+      if (e.target.closest("button")) return;
+      if (confirm("Delete this message?")) {
+        wrapper.remove();
+        saveChat();
+      }
+    });
+
+    return wrapper;
+  }
+
+  function getLastMessages(limit = 10) {
+    const bubbles = Array.from(chatbox.querySelectorAll(".chat-bubble"));
+    const pairs = [];
+    for (let i = 0; i < bubbles.length - 1; i++) {
+      const curr = bubbles[i];
+      const next = bubbles[i + 1];
+      if (curr.classList.contains("chat-right") && next.classList.contains("chat-left")) {
+        pairs.push({ user: curr.textContent, ai: next.textContent });
+      }
+    }
+    return pairs.slice(-limit);
+  }
+
+  function sendMessage(text) {
+    if (!text.trim()) return;
+
+    const userMsg = createMessageElement(text, "right");
+    chatbox.appendChild(userMsg);
+    scrollToBottom();
+    saveChat();
+
+    const context = getLastMessages(5).map(p => `User: ${p.user}\nAiva: ${p.ai}`).join("\n");
+    const fullPrompt = `${systemPrompt}\n\n${context}\nUser: ${text}\nAiva:`;
+
+    const ws = new WebSocket("wss://backend.buildpicoapps.com/api/chatbot/chat");
+    const aiBubble = createMessageElement("", "left");
+    chatbox.appendChild(aiBubble);
+    scrollToBottom();
+
+    ws.addEventListener("open", () => {
+      ws.send(JSON.stringify({
+        chatId,
+        appId: "the-attack",
+        systemPrompt: fullPrompt,
+        message: text
+      }));
+    });
+
+    ws.addEventListener("message", (e) => {
+      aiBubble.innerHTML += e.data;
+      scrollToBottom();
+      saveChat();
+    });
+
+    ws.addEventListener("close", () => {
+      if (!aiBubble.innerHTML) {
+        aiBubble.innerHTML = `<em style="color:red;">Connection failed. Try again.</em>`;
+        saveChat();
+      }
+    });
+
+    input.value = "";
+  }
+
+  sendBtn.addEventListener("click", () => sendMessage(input.value));
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage(input.value);
+    }
+  });
+
+  memoryBtn.addEventListener("click", () => {
+    memoryCard.style.display = memoryCard.style.display === "flex" ? "none" : "flex";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (!memoryBtn.contains(e.target) && !memoryCard.contains(e.target)) {
+      memoryCard.style.display = "none";
+    }
+  });
+
+  function saveChat() {
+    localStorage.setItem("aiva_chat_history", chatbox.innerHTML);
+  }
+
+  function loadChat() {
+    const saved = localStorage.getItem("aiva_chat_history");
+    if (saved) {
+      chatbox.innerHTML = saved;
+      chatbox.querySelectorAll(".chat-bubble").forEach(el => {
+        el.addEventListener("dblclick", () => {
+          if (confirm("Delete this message?")) {
+            el.remove();
+            saveChat();
+          }
+        });
+      });
+    }
+  }
+
+  function clearAllMessages() {
+    if (confirm("Clear all chat messages?")) {
+      chatbox.innerHTML = "";
+      localStorage.removeItem("aiva_chat_history");
+    }
+  }
+
+  function resetMemory() {
+    if (confirm("Reset AI memory/context?")) {
+      localStorage.removeItem("aiva_context_memory");
+      alert("Memory reset! Aiva will forget previous chat history.");
+    }
+  }
+
+  window.onload = loadChat;
+</script>
+
+<script>
+  const micButton = document.getElementById("micButton");
+  let recognizing = false;
+  let recognition;
+
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      recognizing = true;
+      micButton.innerHTML = '<span class="material-icons">mic_off</span>';
+    };
+
+    recognition.onend = () => {
+      recognizing = false;
+      micButton.innerHTML = '<span class="material-icons">mic</span>';
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      input.value = transcript;
+      sendMessage(transcript);
+    };
+  } else {
+    micButton.disabled = true;
+    micButton.title = "Voice not supported";
+  }
+
+  micButton.addEventListener("click", () => {
+    if (recognizing) {
+      recognition.stop();
+    } else {
+      recognition.start();
+    }
+  });
+
+  function speakText(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    window.speechSynthesis.speak(utterance);
+  }
+</script>
+</body>    
+  </html>
